@@ -20,16 +20,15 @@ const initializeDbServer = async () => {
   }
 };
 initializeDbServer();
-const get_player = app.get("/players/", async (request, response) => {
+app.get("/players/", async (request, response) => {
   const getPlayerQuery = `
     SELECT * FROM cricket_team
     ORDER BY player_id;`;
   const playersArray = await db.all(getPlayerQuery);
   response.send(playersArray);
 });
-module.exports = get_player;
 
-const post_app = app.post("/players/", async (request, response) => {
+app.post("/players/", async (request, response) => {
   //   const player_id = request.params;
   const playerDetails = request.body;
   //console.log(request);
@@ -47,9 +46,8 @@ const post_app = app.post("/players/", async (request, response) => {
   const player_Id = dbResponse.lastID;
   response.send({ player_id: player_Id });
 });
-module.exports = post_app;
 
-const get_app = app.get("/players/:playerId/", async (request, response) => {
+app.get("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const playerQuery = `
     SELECT * FROM cricket_team WHERE player_id=${playerId}`;
@@ -57,7 +55,7 @@ const get_app = app.get("/players/:playerId/", async (request, response) => {
   response.send(player);
 });
 
-const update_app = app.put("/players/:playerId/", async (request, response) => {
+app.put("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const playerDetails = request.body;
   const { playerName, jerseyNumber, role } = playerDetails;
@@ -72,11 +70,8 @@ const update_app = app.put("/players/:playerId/", async (request, response) => {
   await db.run(updateQuery);
   response.send("Player Details Updated");
 });
-module.exports = update_app;
 
-const delete_app = app.delete(
-  "/players/:playerId/",
-  async (request, response) => {
+app.delete("/players/:playerId/",async (request, response) => {
     const { playerId } = request.params;
     const deleteBookQuery = `
     DELETE FROM cricket_team WHERE playerId = ${playerId}; `;
@@ -84,4 +79,4 @@ const delete_app = app.delete(
     response.send("Player Removed");
   }
 );
-module.exports = delete_app;
+module.exports = app;
