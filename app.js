@@ -28,10 +28,6 @@ app.get("/players/", async (request, response) => {
 });
 
 app.post("/players/", async (request, response) => {
-<<<<<<< HEAD
-=======
-  //   const player_id = request.params;
->>>>>>> f26b24b209af6aed1753a6c9682a05260c02b5f5
   const playerDetails = request.body;
   console.log(playerDetails);
   const { playerName, jerseyNumber, role } = playerDetails;
@@ -41,7 +37,7 @@ app.post("/players/", async (request, response) => {
     (  '${playerName}',
         ${jerseyNumber},
         ${role}
-    };`;
+    );`;
   const dbResponse = await db.run(addPlayerQuery);
   const playerId = dbResponse.lastID;
   response.send("Player Added to Team");
@@ -66,13 +62,12 @@ app.put("/players/:playerId/", async (request, response) => {
     player_name = '${playerName}',
     jersey_number = ${jerseyNumber},
     role = '${role}'
-    WHERE player_id = ${playerID};
+    WHERE player_id = ${playerId};
     `;
   await db.run(updatePlayerQuery);
   response.send("Player Details Updated");
 });
 
-<<<<<<< HEAD
 app.delete("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const deleteBookQuery = `
@@ -80,14 +75,4 @@ app.delete("/players/:playerId/", async (request, response) => {
   await db.run(deleteBookQuery);
   response.send("Player Removed");
 });
-=======
-app.delete("/players/:playerId/",async (request, response) => {
-    const { playerId } = request.params;
-    const deleteBookQuery = `
-    DELETE FROM cricket_team WHERE playerId = ${playerId}; `;
-    await db.run(deleteBookQuery);
-    response.send("Player Removed");
-  }
-);
->>>>>>> f26b24b209af6aed1753a6c9682a05260c02b5f5
 module.exports = app;
